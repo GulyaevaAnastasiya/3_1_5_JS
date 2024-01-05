@@ -43,17 +43,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
-    public boolean add(User user) {
+    public void add(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            System.out.println("User already exists");
+        } else {
             createRolesIfNotExist();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            return true;
-        } else {
-            return false;
         }
     }
+
 
     public void createRolesIfNotExist() {
         if (roleRepository.findByName("ROLE_USER").isEmpty()) {

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<h2>Users</h2>
+<table th:border="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Password</th>
+        <th>Roles</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>UserDetails</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.phoneNumber}"></td>
+        <td th:text="${user.password}"></td>
+        <td>
+                <span th:each="role, iterStat : ${user.roles}">
+                    <span th:text="${role.name.substring(5)}"></span>
+                    <span th:if="${!iterStat.last}"> </span>
+                </span>
+        </td>
+        <td>
+            <form th:action="@{/admin/update_user}" th:method="get">
+                <input type="hidden" name="id" th:value="${user.getId()}">
+                <button type="submit">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/admin/remove}" th:method="post">
+                <input type="hidden" name="id" th:value="${user.getId()}"/>
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/user}" th:method="get">
+                <input type="hidden" name="id" th:value="${user.getId()}">
+                <button type="submit">Details</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<a href="/admin/add">Add user</a>
+<br/>
+<form th:action="@{/logout}" th:method="post">
+    <input type="submit" value="Logout"/>
+</form>
+
+</body>
+</html>

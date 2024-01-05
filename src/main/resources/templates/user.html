@@ -1,11 +1,53 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>User Details</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
 
+<div class="container">
+    <div style="text-align: center;">
+        <h1>User page</h1>
+    </div>
+
+    <table th:border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Password</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:object="${user}">
+            <td th:text="*{id}"></td>
+            <td th:text="*{username}"></td>
+            <td th:text="*{email}"></td>
+            <td th:text="*{phoneNumber}"></td>
+            <td th:text="*{password}"></td>
+
+            <td>
+                <span th:each="role, iterStat : ${user.roles}">
+                    <span th:text="${role.name.substring(5)}"></span>
+                    <span th:if="${!iterStat.last}"></span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin}">Back to Users List</a>
+    <br/>
+    <form th:action="@{/logout}" th:method="post">
+        <input type="submit" value="Logout"/>
+    </form>
+</div>
 
 </body>
 </html>

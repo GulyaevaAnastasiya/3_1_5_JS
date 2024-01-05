@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new user</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/users/add}" th:object="${newUser}">
+    <label for="name">Name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+
+    <label for="name">Email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <br/>
+
+    <label for="name">Phone number: </label>
+    <input type="text" th:field="*{phoneNumber}" id="phone_number"/>
+    <br/>
+
+    <label for="password">Password:</label>
+    <input type="text" id="password" name="password" th:field="*{password}">
+    <br/>
+
+    <label for="roles">Select roles:</label>
+    <select id="roles" name="roles" multiple="multiple">
+        <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name.substring(5)}"></option>
+    </select>
+    <br/>
+
+    <td colspan="2"><input type="submit" value="Add" /></td>
+
+</form>
+</body>
+</html>

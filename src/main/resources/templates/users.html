@@ -22,7 +22,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user: ${users}">
+<!--    ---------------------------------------------->
+
+
+
+<!--    ----------------------------------------------->
+    <tr th:each="user: ${usersList}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.email}"></td>
@@ -35,7 +40,7 @@
                 </span>
         </td>
         <td>
-            <form th:action="@{/admin/update_user}" th:method="get">
+            <form th:action="@{/admin/edit}" th:method="get">
                 <input type="hidden" name="id" th:value="${user.getId()}">
                 <button type="submit">Edit</button>
             </form>

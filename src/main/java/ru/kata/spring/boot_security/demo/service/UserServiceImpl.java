@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void update(User user, Collection<Role> roles) {
         if (userRepository.findByUsername(user.getUsername()).isEmpty()) {
-            new EntityNotFoundException("User not found");
+            throw new EntityNotFoundException("User not found");
         } else {
             userRepository.save(user);
         }
@@ -82,8 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         if (userRepository.findByUsername(username).isEmpty()) {
-            new EntityNotFoundException("User not found");
-            return null;
+            throw new EntityNotFoundException("User not found");
         } else {
             return userRepository.findByUsername(username).get();
         }

@@ -74,7 +74,7 @@ public class AdminController {
             return "users";
         }
         userService.update(user, user.getRoles());
-        return "redirect:/admin";
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/add")

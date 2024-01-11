@@ -81,8 +81,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).get();
+        if (userRepository.findByUsername(username).isEmpty()) {
+            new EntityNotFoundException("User not found");
+            return null;
+        } else {
+            return userRepository.findByUsername(username).get();
+        }
     }
-
-
 }

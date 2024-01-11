@@ -11,16 +11,20 @@
 
     <label for="username">Enter name: </label>
     <input type="text" th:field="*{name}" id="username" name="username"/>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
 
     <label for="email">Enter email: </label>
     <input type="text" th:field="*{email}" id="email" name="email"/>
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
 
 
     <label for="phone_number">Enter phone number: </label>
     <input type="text" th:field="*{phoneNumber}" id="phone_number" name="phone_number"/>
+    <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone number error</div>
 
     <label for="password">Password:</label>
     <input type="text" id="password" name="password" th:field="*{password}">
+    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
 
     <div>
         <label for="roles">Select roles:</label>

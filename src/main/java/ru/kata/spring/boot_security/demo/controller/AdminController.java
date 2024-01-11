@@ -63,18 +63,13 @@ public class AdminController {
     @PostMapping("/edit")
     public String edit(@ModelAttribute("user") @Valid User user,
                        BindingResult bindingResult, Model model) {
-        User foundByNameUser = userService.findByUsername(user.getName());
-        if (foundByNameUser != null && (foundByNameUser.getId() != user.getId())) {
-            bindingResult.rejectValue("name", "error.username",
-                    "This username is already used");
-        }
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("editUserError", true);
             return "users";
         }
         userService.update(user, user.getRoles());
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
     @PostMapping("/add")

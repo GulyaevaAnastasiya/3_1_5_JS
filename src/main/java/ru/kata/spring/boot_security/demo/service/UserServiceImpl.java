@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(User user, Collection<Role> roles) {
-        if (userRepository.findByUsername(user.getUsername()).isEmpty()) {
-            throw new EntityNotFoundException("User not found");
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new EntityNotFoundException("User with name " + user.getName() + " is already exist");
         } else {
             userRepository.save(user);
         }

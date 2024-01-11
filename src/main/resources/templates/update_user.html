@@ -5,18 +5,18 @@
     <title>Update user</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/users/edit(id=${user.id})}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/edit(id=${user.id})}" th:object="${user}">
 
     <input type="hidden" name="id" th:value="${user.id}"/>
 
-    <label for="name">Enter name: </label>
-    <input type="text" th:field="*{name}" id="name" name="name"/>
+    <label for="username">Enter name: </label>
+    <input type="text" th:field="*{name}" id="username" name="username"/>
 
-    <label for="name">Enter email: </label>
+    <label for="email">Enter email: </label>
     <input type="text" th:field="*{email}" id="email" name="email"/>
 
 
-    <label for="name">Enter phone number: </label>
+    <label for="phone_number">Enter phone number: </label>
     <input type="text" th:field="*{phoneNumber}" id="phone_number" name="phone_number"/>
 
     <label for="password">Password:</label>

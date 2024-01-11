@@ -2,9 +2,6 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.entity.Role;
@@ -13,13 +10,13 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -34,15 +31,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Unknown user: " + username);
-        }
-        return user.get();
-    }
-
-    @Override
+    @Transactional
     public void add(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             System.out.println("User already exists");
@@ -53,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
-
+    @Transactional
     public void createRolesIfNotExist() {
         if (roleRepository.findByName("ROLE_USER").isEmpty()) {
             roleRepository.save(new Role(1L, "ROLE_USER"));
@@ -70,13 +59,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void update(User user, List<Role> roles) {
-        User userInDB = userRepository.findByUsername(user.getUsername()).get();
-        if (userInDB != null) {
-            userInDB.setName(user.getName());
-            userInDB.setPassword(passwordEncoder.encode(user.getPassword()));
-            userInDB.setEmail(user.getEmail());
-            userInDB.setPhoneNumber(user.getPhoneNumber());
+    public void update(User user, Collection<Role> roles) {
+        if (userRepository.findByUsername(user.getUsername()).isEmpty()) {
+            new EntityNotFoundException("User not found");
+        } else {
+            userRepository.save(user);
         }
     }
 
@@ -87,8 +74,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User get(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException
+    public User getUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException
                 ("User with id " + id + " not found"));
     }
 

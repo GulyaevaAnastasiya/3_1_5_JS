@@ -23,7 +23,7 @@ public class UserController {
     public String showUser(@RequestParam(name = "id", required = false) Long id, Model model, Principal principal) {
         User user;
         if (id != null) {
-            user = userService.get(id);
+            user = userService.getUser(id);
         } else {
             String username = principal.getName();
             user = userService.findByUsername(username);

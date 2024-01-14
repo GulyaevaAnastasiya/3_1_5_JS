@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.util.List;
@@ -19,11 +18,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private final RoleService roleService;
+    private final RoleRepository roleRepository;
     private final UserServiceImpl userService;
 
-    public AdminController(RoleService roleService, UserServiceImpl userService) {
-        this.roleService = roleService;
+    public AdminController(RoleRepository roleRepository, UserServiceImpl userService) {
+        this.roleRepository = roleRepository;
         this.userService = userService;
     }
 
@@ -57,7 +56,7 @@ public class AdminController {
 
     @PostMapping ("/save")
     public String save(User user, @ModelAttribute("newRole") Role role){
-        userService.update(user, user.getRoles());
+        userService.update(user, (List<Role>) role);
         return "redirect:/admin";
     }
 
